@@ -1,6 +1,6 @@
 # Movie App
 
-[![Flutter](https://img.shields.io/badge/Flutter-1.22+-blue.svg)](https://flutter.dev)
+[![Flutter](https://img.shields.io/badge/Flutter-3.27.1+-blue.svg)](https://flutter.dev)
 [![GetX](https://img.shields.io/badge/GetX-State%20Management-blueviolet)](https://pub.dev/packages/get)
 
 Movie App es una aplicación móvil desarrollada con Flutter que permite a los usuarios explorar películas populares, filtrarlas por título y ver detalles específicos de cada película. La aplicación está diseñada siguiendo los principios de **Clean Architecture** y utiliza bibliotecas modernas para mejorar la experiencia del usuario.
@@ -102,7 +102,7 @@ lib/
 ├── app/               # Carpeta principal de la aplicación
 │   ├── app.dart       # Archivo con el widget GetMaterialApp (configuración global)
 │   ├── core/          # Configuración global (tema, internacionalización, utilidades)
-│   │   ├── constants/    # Constantes globales
+│   │   ├── constants/      # Constantes globales
 │   │   ├── localization/   # Archivos de traducción e internacionalización
 │   │   ├── theme/          # Configuración de temas (claro/oscuro)
 │   │   └── utils/          # Utilidades generales (Dio, Preferences, etc.)
@@ -136,6 +136,6 @@ Esta estructura garantiza una separación clara entre las capas de la aplicació
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la Licencia MIT.
 
 ---
