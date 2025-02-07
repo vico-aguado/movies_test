@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../bindings/home_binding.dart';
 import '../views/home_view.dart';
+import '../views/movie_detail_view.dart';
 import '../views/settings_view.dart';
 import 'app_routes.dart';
 
@@ -15,6 +16,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.settings,
       page: () => SettingsPage(),
+    ),
+    GetPage(
+      name: AppRoutes.movieDetail,
+      page: () => MovieDetailPage(),
     ),
   ];
 }

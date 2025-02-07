@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
+import '../routes/app_routes.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -30,8 +31,12 @@ class HomePage extends GetView<HomeController> {
         if (controller.isLoading.value && controller.movies.isEmpty) {
           return Center(child: CircularProgressIndicator());
         } else {
-          return ListView.builder(
+          return GridView.builder(
             controller: controller.scrollController,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.7,
+            ),
             itemCount:
                 controller.movies.length + (controller.isLoading.value ? 1 : 0),
             itemBuilder: (context, index) {
@@ -40,15 +45,45 @@ class HomePage extends GetView<HomeController> {
               }
 
               final movie = controller.movies[index];
-              return ListTile(
-                title: Text(movie.title),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Release Date: ${movie.releaseDate}'),
-                    Text('Genres: ${movie.genres}'),
-                    Text(movie.overview),
-                  ],
+              return GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.movieDetail, arguments: movie);
+                },
+                child: Card(
+                  elevation: 4,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      movie.posterPath.isNotEmpty
+                          ? Image.network(
+                              'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                              fit: BoxFit.cover,
+                              height: 200,
+                              width: double.infinity,
+                            )
+                          : Container(
+                              height: 200,
+                              color: Colors.grey[300],
+                              child: Center(child: Text('No Image Available')),
+                            ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          movie.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          'Release Date: ${movie.releaseDate}',
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
