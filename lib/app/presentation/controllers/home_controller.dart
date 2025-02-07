@@ -1,4 +1,6 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import '../../domain/entities/paginated_response_entity.dart';
 import '../../domain/usecases/get_movie_genres.dart';
 import '../../domain/usecases/get_popular_movies.dart';
 import '../../domain/entities/movie_entity.dart';
@@ -11,7 +13,11 @@ class HomeController extends GetxController {
 
   var movies = <MovieEntity>[].obs;
   var isLoading = true.obs;
+  var currentPage = 1;
+  var totalPages = 1;
   Map<int, String> genreMap = {};
+
+  final ScrollController scrollController = ScrollController();
 
   HomeController({
     required this.getPopularMovies,
@@ -22,20 +28,34 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchPopularMoviesAndGenres();
+    fetchInitialData();
     ever(settingsController.currentLanguage, (_) {
-      fetchPopularMoviesAndGenres();
+      resetAndFetchMovies();
     });
   }
 
-  Future<void> fetchPopularMoviesAndGenres() async {
+  Future<void> fetchInitialData() async {
+    isLoading.value = true;
     try {
-      isLoading.value = true;
-
       genreMap = await getMovieGenres();
 
-      final fetchedMovies = await getPopularMovies();
-      movies.value = fetchedMovies.map((movie) {
+      await fetchMovies();
+    } catch (e) {
+      Get.snackbar('Error', 'No se pudieron cargar las películas o géneros.');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> fetchMovies() async {
+    if (currentPage > totalPages) return;
+
+    try {
+      isLoading.value = true;
+      final PaginatedResponseEntity result =
+          await getPopularMovies(page: currentPage);
+      totalPages = result.totalPages;
+      movies.addAll(result.movies.map((movie) {
         final genreNames = movie.genreIds
             .map((id) => genreMap[id] ?? 'Unknown')
             .toList()
@@ -49,11 +69,25 @@ class HomeController extends GetxController {
           genreIds: movie.genreIds,
           genres: genreNames,
         );
-      }).toList();
+      }).toList());
+      currentPage++;
     } catch (e) {
-      Get.snackbar('Error', 'No se pudieron cargar las películas.');
+      Get.snackbar('Error', 'No se pudieron cargar más películas.');
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  void resetAndFetchMovies() {
+    movies.clear();
+    currentPage = 1;
+    totalPages = 1;
+    fetchMovies();
+  }
+
+  void loadMoreMovies() {
+    if (!isLoading.value) {
+      fetchMovies();
     }
   }
 }

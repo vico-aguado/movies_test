@@ -1,4 +1,4 @@
-import '../entities/movie_entity.dart';
+import '../entities/paginated_response_entity.dart';
 import '../repositories/movie_repository.dart';
 
 class GetPopularMovies {
@@ -6,7 +6,7 @@ class GetPopularMovies {
 
   GetPopularMovies(this.repository);
 
-  Future<List<MovieEntity>> call() async {
-    return await repository.getPopularMovies();
+  Future<PaginatedResponseEntity> call({required int page}) async {
+    return await repository.getPopularMovies(page: page);
   }
 }

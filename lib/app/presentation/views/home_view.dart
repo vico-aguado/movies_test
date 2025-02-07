@@ -7,6 +7,13 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.scrollController.addListener(() {
+      if (controller.scrollController.position.pixels ==
+          controller.scrollController.position.maxScrollExtent) {
+        controller.loadMoreMovies();
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text('home'.tr),
@@ -20,12 +27,18 @@ class HomePage extends GetView<HomeController> {
         ],
       ),
       body: Obx(() {
-        if (controller.isLoading.value) {
+        if (controller.isLoading.value && controller.movies.isEmpty) {
           return Center(child: CircularProgressIndicator());
         } else {
           return ListView.builder(
-            itemCount: controller.movies.length,
+            controller: controller.scrollController,
+            itemCount:
+                controller.movies.length + (controller.isLoading.value ? 1 : 0),
             itemBuilder: (context, index) {
+              if (index == controller.movies.length) {
+                return Center(child: CircularProgressIndicator());
+              }
+
               final movie = controller.movies[index];
               return ListTile(
                 title: Text(movie.title),
