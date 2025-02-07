@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../controllers/home_controller.dart';
 
-import '../routes/app_routes.dart';
-
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
   @override
@@ -15,14 +14,34 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              Get.toNamed(AppRoutes.settings);
+              Get.toNamed('/settings');
             },
           ),
         ],
       ),
-      body: Center(
-        child: Text('home'.tr),
-      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          return ListView.builder(
+            itemCount: controller.movies.length,
+            itemBuilder: (context, index) {
+              final movie = controller.movies[index];
+              return ListTile(
+                title: Text(movie.title),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Release Date: ${movie.releaseDate}'),
+                    Text('Genres: ${movie.genres}'),
+                    Text(movie.overview),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+      }),
     );
   }
 }
