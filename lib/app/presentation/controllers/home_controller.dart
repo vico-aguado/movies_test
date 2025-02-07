@@ -12,9 +12,11 @@ class HomeController extends GetxController {
   final SettingsController settingsController;
 
   var movies = <MovieEntity>[].obs;
+  var filteredMovies = <MovieEntity>[].obs;
   var isLoading = true.obs;
   var currentPage = 1;
   var totalPages = 1;
+  String _currentQuery = '';
   Map<int, String> genreMap = {};
 
   final ScrollController scrollController = ScrollController();
@@ -65,11 +67,14 @@ class HomeController extends GetxController {
           title: movie.title,
           overview: movie.overview,
           posterPath: movie.posterPath,
+          backdropPath: movie.backdropPath,
           releaseDate: movie.releaseDate,
           genreIds: movie.genreIds,
           genres: genreNames,
         );
       }).toList());
+
+      filterMovies(_currentQuery);
       currentPage++;
     } catch (e) {
       Get.snackbar('Error', 'No se pudieron cargar más películas.');
@@ -88,6 +93,19 @@ class HomeController extends GetxController {
   void loadMoreMovies() {
     if (!isLoading.value) {
       fetchMovies();
+    }
+  }
+
+  void filterMovies(String query) {
+    _currentQuery = query.toLowerCase();
+    if (_currentQuery.isEmpty) {
+      filteredMovies.assignAll(movies);
+    } else {
+      filteredMovies.assignAll(
+        movies
+            .where((movie) => movie.title.toLowerCase().contains(_currentQuery))
+            .toList(),
+      );
     }
   }
 }

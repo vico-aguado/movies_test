@@ -17,9 +17,9 @@ class MovieDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            movie.posterPath.isNotEmpty
+            movie.backdropPath.isNotEmpty
                 ? Image.network(
-                    'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                    'https://image.tmdb.org/t/p/w500${movie.backdropPath}',
                     fit: BoxFit.cover,
                     height: 300,
                     width: double.infinity,
@@ -41,7 +41,7 @@ class MovieDetailPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Release Date: ${movie.releaseDate}',
+                '${'release_date'.tr}: ${movie.releaseDate}',
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             ),
@@ -49,7 +49,7 @@ class MovieDetailPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Genres: ${movie.genres}',
+                '${'genres'.tr}: ${movie.genres}',
                 style: TextStyle(fontSize: 16),
               ),
             ),

@@ -15,7 +15,13 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final response = await _dioClient.get(
         '/movie/popular',
-        queryParameters: {'page': page},
+        queryParameters: {
+          'page': page,
+          'sort_by': 'popularity.desc',
+          'with_release_type': '2|3',
+          'include_adult': 'false',
+          'include_video': 'false',
+        },
       );
       final List<dynamic> results = response.data['results'];
       final totalPages = response.data['total_pages'] ?? 1;

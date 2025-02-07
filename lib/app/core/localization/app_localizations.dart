@@ -10,6 +10,9 @@ class AppLocalizations extends Translations {
           'change_theme': 'Change Theme',
           'light_mode': 'Light Mode',
           'dark_mode': 'Dark Mode',
+          'search': 'Search',
+          'release_date': 'Release Date',
+          'genres': 'Genres',
         },
         'es': {
           'home': 'Inicio',
@@ -18,6 +21,9 @@ class AppLocalizations extends Translations {
           'change_theme': 'Cambiar Tema',
           'light_mode': 'Modo Claro',
           'dark_mode': 'Modo Oscuro',
+          'search': 'Buscar',
+          'release_date': 'Fecha de Lanzamiento',
+          'genres': 'Géneros',
         },
       };
 }
