@@ -7,6 +7,7 @@ import 'core/localization/supported_locales.dart';
 import 'presentation/routes/app_pages.dart';
 import 'presentation/routes/app_routes.dart';
 import 'core/theme/app_theme.dart';
+import 'presentation/bindings/settings_binding.dart';
 
 class MyApp extends StatelessWidget {
   final bool isDarkMode;
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: LocalizationDelegate.delegates,
       initialRoute: AppRoutes.home,
       getPages: AppPages.routes,
+      initialBinding: SettingsBinding(),
     );
   }
 }

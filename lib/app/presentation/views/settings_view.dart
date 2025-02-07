@@ -18,26 +18,22 @@ class SettingsPage extends GetView<SettingsController> {
           children: [
             // Cambio de idioma
             Text('change_language'.tr),
-            FutureBuilder<String>(
-              future: controller.loadLanguage(),
-              builder: (context, snapshot) {
-                final currentLanguage = snapshot.data ?? 'en';
-                return DropdownButton<String>(
-                  value: currentLanguage,
-                  onChanged: (value) {
-                    if (value != null) {
-                      controller.changeLanguage(value);
-                    }
-                  },
-                  items: ['en', 'es'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value == 'en' ? 'English' : 'Español'),
-                    );
-                  }).toList(),
-                );
-              },
-            ),
+            Obx(() {
+              return DropdownButton<String>(
+                value: controller.currentLanguage.value,
+                onChanged: (value) {
+                  if (value != null) {
+                    controller.changeLanguage(value);
+                  }
+                },
+                items: ['en', 'es'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value == 'en' ? 'English' : 'Español'),
+                  );
+                }).toList(),
+              );
+            }),
             SizedBox(height: 20),
 
             // Cambio de tema

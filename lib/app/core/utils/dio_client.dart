@@ -14,6 +14,8 @@ class DioClient {
       onRequest: (options, handler) {
         final String bearerToken = dotenv.env['MOVIEDB_TOKEN'] ?? '';
         options.headers['Authorization'] = 'Bearer $bearerToken';
+        final String languageCode = Get.locale?.languageCode ?? 'en';
+        options.queryParameters['language'] = languageCode;
         return handler.next(options);
       },
       onError: (error, handler) {

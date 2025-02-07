@@ -17,6 +17,7 @@ class HomeBinding extends Bindings {
     Get.lazyPut(() => HomeController(
           getPopularMovies: getPopularMovies,
           getMovieGenres: getMovieGenres,
+          settingsController: Get.find(),
         ));
   }
 }

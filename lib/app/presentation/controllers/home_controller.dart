@@ -2,10 +2,13 @@ import 'package:get/get.dart';
 import '../../domain/usecases/get_movie_genres.dart';
 import '../../domain/usecases/get_popular_movies.dart';
 import '../../domain/entities/movie_entity.dart';
+import 'settings_controller.dart';
 
 class HomeController extends GetxController {
   final GetPopularMovies getPopularMovies;
   final GetMovieGenres getMovieGenres;
+  final SettingsController settingsController;
+
   var movies = <MovieEntity>[].obs;
   var isLoading = true.obs;
   Map<int, String> genreMap = {};
@@ -13,12 +16,16 @@ class HomeController extends GetxController {
   HomeController({
     required this.getPopularMovies,
     required this.getMovieGenres,
+    required this.settingsController,
   });
 
   @override
   void onInit() {
     super.onInit();
     fetchPopularMoviesAndGenres();
+    ever(settingsController.currentLanguage, (_) {
+      fetchPopularMoviesAndGenres();
+    });
   }
 
   Future<void> fetchPopularMoviesAndGenres() async {
