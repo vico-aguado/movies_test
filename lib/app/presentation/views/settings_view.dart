@@ -5,7 +5,6 @@ import '../controllers/settings_controller.dart';
 
 class SettingsPage extends GetView<SettingsController> {
   const SettingsPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,22 +16,31 @@ class SettingsPage extends GetView<SettingsController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Cambio de idioma
             Text('change_language'.tr),
-            DropdownButton<String>(
-              value: Get.locale?.languageCode ?? 'en',
-              onChanged: (value) {
-                if (value != null) {
-                  controller.changeLanguage(value);
-                }
-              },
-              items: ['en', 'es'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value == 'en' ? 'English' : 'Español'),
+            FutureBuilder<String>(
+              future: controller.loadLanguage(),
+              builder: (context, snapshot) {
+                final currentLanguage = snapshot.data ?? 'en';
+                return DropdownButton<String>(
+                  value: currentLanguage,
+                  onChanged: (value) {
+                    if (value != null) {
+                      controller.changeLanguage(value);
+                    }
+                  },
+                  items: ['en', 'es'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value == 'en' ? 'English' : 'Español'),
+                    );
+                  }).toList(),
                 );
-              }).toList(),
+              },
             ),
             SizedBox(height: 20),
+
+            // Cambio de tema
             Obx(() {
               final isDarkMode = controller.themeController.isDarkMode.value;
               return SwitchListTile(
