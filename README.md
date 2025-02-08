@@ -14,7 +14,7 @@ Movie App es una aplicación móvil desarrollada con Flutter que permite a los u
 3. [Tecnologías y Bibliotecas Utilizadas](#tecnologías-y-bibliotecas-utilizadas)
 4. [Cómo Ejecutar el Proyecto](#cómo-ejecutar-el-proyecto)
 5. [Estructura del Proyecto](#estructura-del-proyecto)
-6. [Pruebas](#pruebas)
+6. [Pruebas y Generación de Mocks](#pruebas-y-generación-de-mocks)
 7. [Licencia](#licencia)
 
 ---
