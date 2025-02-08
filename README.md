@@ -14,7 +14,8 @@ Movie App es una aplicación móvil desarrollada con Flutter que permite a los u
 3. [Tecnologías y Bibliotecas Utilizadas](#tecnologías-y-bibliotecas-utilizadas)
 4. [Cómo Ejecutar el Proyecto](#cómo-ejecutar-el-proyecto)
 5. [Estructura del Proyecto](#estructura-del-proyecto)
-6. [Licencia](#licencia)
+6. [Pruebas](#pruebas)
+7. [Licencia](#licencia)
 
 ---
 
@@ -131,6 +132,83 @@ lib/
 - **`main.dart`**: Es el punto de entrada de la aplicación, donde se inicializa `app.dart`.
 
 Esta estructura garantiza una separación clara entre las capas de la aplicación, facilitando su mantenimiento y escalabilidad.
+
+--- 
+
+## Pruebas y Generación de Mocks
+
+Este proyecto utiliza **mocks** generados automáticamente para facilitar las pruebas unitarias y de integración. Además, se incluye soporte para medir la cobertura de código (`code coverage`) para garantizar que las pruebas cubran la mayor cantidad posible de funcionalidades.
+
+### Generación de Mocks
+Para generar los mocks necesarios, este proyecto utiliza la biblioteca [**mockito**](https://pub.dev/packages/mockito). Los mocks son generados automáticamente a partir de las clases definidas en la capa de dominio y datos.
+
+#### Pasos para Generar Mocks:
+1. Asegúrate de tener instalada la herramienta `build_runner`:
+   ```bash
+   flutter pub global activate build_runner
+   ```
+2. Ejecuta el siguiente comando para generar los mocks:
+   ```bash
+   flutter pub run build_runner build --delete-conflicting-outputs
+   ```
+   Esto generará archivos `.g.dart` en las carpetas correspondientes.
+
+> **Nota**: Si modificas alguna clase que requiere mocks, deberás regenerarlos con el comando anterior.
+
+---
+
+### Ejecución de Pruebas
+Las pruebas están organizadas en la carpeta `test/` y cubren diferentes capas de la aplicación, como presentación, dominio y datos.
+
+#### Ejecutar Todas las Pruebas:
+```bash
+flutter test
+```
+
+#### Ejecutar Pruebas Específicas:
+Puedes ejecutar un archivo de prueba específico utilizando:
+```bash
+flutter test test/presentation/controllers/movie_controller_test.dart
+```
+
+---
+
+### Generación de Cobertura de Código (Coverage)
+Para medir qué porcentaje del código está cubierto por las pruebas, puedes utilizar la herramienta `lcov`.
+
+#### Requisitos Previos:
+1. Instala `lcov` en tu sistema:
+   - **macOS**: `brew install lcov`
+   - **Linux**: `sudo apt-get install lcov`
+   - **Windows**: Descarga e instala desde [LCOV for Windows](http://ltp.sourceforge.net/coverage/lcov.php).
+
+2. Ejecuta las pruebas con cobertura habilitada:
+   ```bash
+   flutter test --coverage
+   ```
+
+3. Genera el reporte HTML de cobertura:
+   ```bash
+   genhtml coverage/lcov.info -o coverage/html
+   ```
+
+4. Abre el reporte en tu navegador:
+   ```bash
+   open coverage/html/index.html
+   ```
+
+---
+
+### Ejemplo de Reporte de Cobertura
+Aquí tienes un ejemplo de cómo se ve el reporte de cobertura:
+
+![Code Coverage Example](https://github.com/vico-aguado/movies_test/blob/main/coverage/html/index.html)
+
+El reporte muestra el porcentaje de líneas cubiertas por las pruebas en cada archivo, lo que te permite identificar áreas del código que necesitan más pruebas.
+
+Y dentro de Visual Studio Code con la extensión de 'Flutter Coverage':
+
+![Flutter Coverage](https://github.com/vico-aguado/movies_test/blob/main/coverage/html/index.html)
 
 --- 
 
