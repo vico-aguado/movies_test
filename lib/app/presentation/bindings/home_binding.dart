@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 
+import '../../core/services/alerts_service.dart';
 import '../../core/utils/dio_client.dart';
 import '../../data/repositories/movie_repository_impl.dart';
 import '../../domain/usecases/get_movie_genres.dart';
@@ -10,15 +13,23 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     final dioClient = DioClient(
-      errorHandler: (error) {
+        interceptor: InterceptorsWrapper(
+      onRequest: (options, handler) {
+        final String bearerToken = dotenv.env['MOVIEDB_TOKEN'] ?? '';
+        options.headers['Authorization'] = 'Bearer $bearerToken';
+        final String languageCode = Get.locale?.languageCode ?? 'en';
+        options.queryParameters['language'] = languageCode;
+        return handler.next(options);
+      },
+      onError: (error, handler) {
         if (error.response?.statusCode == 401) {
           Get.snackbar('Error', 'Acceso no autorizado. Verifica tu token.');
         } else {
           Get.snackbar('Error', 'Ocurrió un error: ${error.message}');
         }
+        return handler.next(error);
       },
-      languageProvider: () => Get.locale?.languageCode ?? 'en',
-    );
+    ));
     final movieRepository = MovieRepositoryImpl(dioClient);
     final getPopularMovies = GetPopularMovies(movieRepository);
     final getMovieGenres = GetMovieGenres(movieRepository);
@@ -27,6 +38,7 @@ class HomeBinding extends Bindings {
           getPopularMovies: getPopularMovies,
           getMovieGenres: getMovieGenres,
           settingsController: Get.find(),
+          alertsService: AlertsService(),
         ));
   }
 }

@@ -29,13 +29,22 @@ void main() {
     await dotenv.load(fileName: '.env.test');
 
     dioClient = DioClient(
-      dioClient: mockDio, // Inyectar el mock de Dio
-      errorHandler: (error) {},
-      languageProvider: () => 'es', // Simular idioma español
+      dioClient: mockDio,
     );
   });
 
   group('DioClient Test', () {
+    test('no set dioClient', () {
+      final dioClientTest = DioClient(
+        interceptor: dio.InterceptorsWrapper(
+          onRequest: (options, handler) {
+            return handler.next(options);
+          },
+        ),
+      );
+
+      expect(dioClientTest, isA<DioClient>());
+    });
     test('should set base URL and timeouts correctly', () {
       // Configurar stub para el método `get`
       when(mockDio.get(

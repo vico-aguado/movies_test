@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import '../../core/services/alerts_service.dart';
 import '../../domain/entities/paginated_response_entity.dart';
 import '../../domain/usecases/get_movie_genres.dart';
 import '../../domain/usecases/get_popular_movies.dart';
@@ -10,6 +11,7 @@ class HomeController extends GetxController {
   final GetPopularMovies getPopularMovies;
   final GetMovieGenres getMovieGenres;
   final SettingsController settingsController;
+  final AlertsService alertsService;
 
   var movies = <MovieEntity>[].obs;
   var filteredMovies = <MovieEntity>[].obs;
@@ -25,28 +27,15 @@ class HomeController extends GetxController {
     required this.getPopularMovies,
     required this.getMovieGenres,
     required this.settingsController,
+    required this.alertsService,
   });
 
   @override
   void onInit() {
     super.onInit();
-    fetchInitialData();
     ever(settingsController.currentLanguage, (_) {
       resetAndFetchMovies();
     });
-  }
-
-  Future<void> fetchInitialData() async {
-    isLoading.value = true;
-    try {
-      genreMap = await getMovieGenres();
-
-      await fetchMovies();
-    } catch (e) {
-      Get.snackbar('Error', 'No se pudieron cargar las películas o géneros.');
-    } finally {
-      isLoading.value = false;
-    }
   }
 
   Future<void> fetchMovies() async {
@@ -54,6 +43,7 @@ class HomeController extends GetxController {
 
     try {
       isLoading.value = true;
+      genreMap = await getMovieGenres();
       final PaginatedResponseEntity result =
           await getPopularMovies(page: currentPage);
       totalPages = result.totalPages;
@@ -77,7 +67,10 @@ class HomeController extends GetxController {
       filterMovies(_currentQuery);
       currentPage++;
     } catch (e) {
-      Get.snackbar('Error', 'No se pudieron cargar más películas.');
+      alertsService.showErrorMessage(
+        'Error',
+        'No se pudieron cargar películas.',
+      );
     } finally {
       isLoading.value = false;
     }
