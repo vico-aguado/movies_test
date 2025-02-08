@@ -23,9 +23,9 @@ class HomeBinding extends Bindings {
       },
       onError: (error, handler) {
         if (error.response?.statusCode == 401) {
-          Get.snackbar('Error', 'Acceso no autorizado. Verifica tu token.');
+          Get.snackbar('Error', 'auth_error'.tr);
         } else {
-          Get.snackbar('Error', 'Ocurrió un error: ${error.message}');
+          Get.snackbar('Error', '${'generic_error'.tr} ${error.message}');
         }
         return handler.next(error);
       },

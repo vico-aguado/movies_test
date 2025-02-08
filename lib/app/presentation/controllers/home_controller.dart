@@ -69,7 +69,7 @@ class HomeController extends GetxController {
     } catch (e) {
       alertsService.showErrorMessage(
         'Error',
-        'No se pudieron cargar películas.',
+        'error_loading_movies'.tr,
       );
     } finally {
       isLoading.value = false;

@@ -106,7 +106,7 @@ void main() {
 
       // Assert
       verify(mockAlertsService.showErrorMessage(
-              'Error', 'No se pudieron cargar películas.'))
+              'Error', 'error_loading_movies'))
           .called(1);
       expect(controller.isLoading.value, false);
     });
