@@ -18,4 +18,30 @@ class MovieEntity {
     this.genreIds = const [],
     this.genres = '',
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is MovieEntity &&
+        other.id == id &&
+        other.title == title &&
+        other.overview == overview &&
+        other.posterPath == posterPath &&
+        other.backdropPath == backdropPath &&
+        other.releaseDate == releaseDate &&
+        other.genreIds == genreIds &&
+        other.genres == genres;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        id,
+        title,
+        overview,
+        posterPath,
+        backdropPath,
+        releaseDate,
+        genreIds,
+        genres,
+      );
 }

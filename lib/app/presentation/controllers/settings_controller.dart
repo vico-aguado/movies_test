@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../core/theme/theme_controller.dart';
-import '../../core/utils/preferences_service.dart';
+import '../../core/services/preferences_service.dart';
 
 class SettingsController extends GetxController {
   final ThemeController themeController;

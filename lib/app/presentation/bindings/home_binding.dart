@@ -9,7 +9,16 @@ import '../controllers/home_controller.dart';
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    final dioClient = DioClient();
+    final dioClient = DioClient(
+      errorHandler: (error) {
+        if (error.response?.statusCode == 401) {
+          Get.snackbar('Error', 'Acceso no autorizado. Verifica tu token.');
+        } else {
+          Get.snackbar('Error', 'Ocurrió un error: ${error.message}');
+        }
+      },
+      languageProvider: () => Get.locale?.languageCode ?? 'en',
+    );
     final movieRepository = MovieRepositoryImpl(dioClient);
     final getPopularMovies = GetPopularMovies(movieRepository);
     final getMovieGenres = GetMovieGenres(movieRepository);

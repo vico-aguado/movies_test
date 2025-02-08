@@ -1,29 +1,35 @@
 import 'package:dio/dio.dart' as dio;
-import 'package:get/get.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../constants/app_constants.dart';
+
+typedef ErrorHandler = void Function(dio.DioException error);
+typedef LanguageProvider = String Function();
 
 class DioClient {
-  final dio.Dio _dio = dio.Dio();
+  final dio.Dio _dio;
+  final ErrorHandler? _errorHandler;
+  final LanguageProvider _languageProvider;
 
-  DioClient() {
-    _dio.options.baseUrl = 'https://api.themoviedb.org/3';
+  DioClient({
+    dio.Dio? dioClient,
+    ErrorHandler? errorHandler,
+    LanguageProvider? languageProvider,
+  })  : _dio = dioClient ?? dio.Dio(),
+        _errorHandler = errorHandler,
+        _languageProvider = languageProvider ?? (() => 'en') {
+    _dio.options.baseUrl = baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 20);
     _dio.options.receiveTimeout = const Duration(seconds: 20);
-
     _dio.interceptors.add(dio.InterceptorsWrapper(
       onRequest: (options, handler) {
         final String bearerToken = dotenv.env['MOVIEDB_TOKEN'] ?? '';
         options.headers['Authorization'] = 'Bearer $bearerToken';
-        final String languageCode = Get.locale?.languageCode ?? 'en';
+        final String languageCode = _languageProvider();
         options.queryParameters['language'] = languageCode;
         return handler.next(options);
       },
       onError: (error, handler) {
-        if (error.response?.statusCode == 401) {
-          Get.snackbar('Error', 'Acceso no autorizado. Verifica tu token.');
-        } else {
-          Get.snackbar('Error', 'Ocurrió un error: ${error.message}');
-        }
+        _errorHandler?.call(error);
         return handler.next(error);
       },
     ));

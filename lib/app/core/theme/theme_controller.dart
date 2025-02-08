@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../utils/preferences_service.dart';
+import '../services/preferences_service.dart';
 
 class ThemeController extends GetxController {
   final isDarkMode = false.obs;
