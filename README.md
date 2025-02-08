@@ -30,6 +30,13 @@ La aplicación **Movie App** consume datos de la API de [The Movie DB](https://w
 
 El proyecto sigue los principios de **Clean Architecture**, lo que garantiza una separación clara entre las capas de presentación, dominio y datos, facilitando la escalabilidad y mantenimiento.
 
+### Pantallas de la aplicación
+
+| Light Mode | Dark Mode |
+|-----------|-----------|
+| ![Home Light Mode](https://github.com/vico-aguado/movies_test/blob/main/screenshots/light.png) | ![Home Dark Mode](https://github.com/vico-aguado/movies_test/blob/main/screenshots/dark.png) |
+
+
 ---
 
 ## Características Principales

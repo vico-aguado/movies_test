@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
-import '../routes/app_routes.dart';
+import '../widgets/thumb_widget.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -52,7 +52,7 @@ class HomePage extends GetView<HomeController> {
                   controller: controller.scrollController,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.7,
+                    childAspectRatio: 0.51,
                   ),
                   itemCount: controller.filteredMovies.length +
                       (controller.isLoading.value ? 1 : 0),
@@ -62,50 +62,7 @@ class HomePage extends GetView<HomeController> {
                     }
 
                     final movie = controller.filteredMovies[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.movieDetail, arguments: movie);
-                      },
-                      child: Card(
-                        elevation: 4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            movie.posterPath.isNotEmpty
-                                ? Image.network(
-                                    'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                                    fit: BoxFit.cover,
-                                    height: 200,
-                                    width: double.infinity,
-                                  )
-                                : Container(
-                                    height: 200,
-                                    color: Colors.grey[300],
-                                    child: Center(
-                                        child: Text('No Image Available')),
-                                  ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                movie.title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                '${'release_date'.tr}: ${movie.releaseDate}',
-                                style:
-                                    TextStyle(fontSize: 11, color: Colors.grey),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
+                    return ThumbWidget(movie: movie);
                   },
                 );
               }
