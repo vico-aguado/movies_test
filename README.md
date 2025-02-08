@@ -202,13 +202,13 @@ Para medir qué porcentaje del código está cubierto por las pruebas, puedes ut
 ### Ejemplo de Reporte de Cobertura
 Aquí tienes un ejemplo de cómo se ve el reporte de cobertura:
 
-![Code Coverage Example](https://github.com/vico-aguado/movies_test/blob/main/coverage/html/index.html)
+![Code Coverage Example](https://github.com/vico-aguado/movies_test/blob/main/coverage_html.png)
 
 El reporte muestra el porcentaje de líneas cubiertas por las pruebas en cada archivo, lo que te permite identificar áreas del código que necesitan más pruebas.
 
 Y dentro de Visual Studio Code con la extensión de 'Flutter Coverage':
 
-![Flutter Coverage](https://github.com/vico-aguado/movies_test/blob/main/coverage/html/index.html)
+![Flutter Coverage](https://github.com/vico-aguado/movies_test/blob/main/coverage.png)
 
 --- 
 
